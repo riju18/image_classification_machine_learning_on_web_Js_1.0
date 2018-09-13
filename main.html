@@ -36,33 +36,49 @@
                 <center><h1>machine learning with <span class="badge badge-success">ml5</span></h1></center>
             </div>
             <div class="col-md-4">
-                <span class="badge badge-pill badge-danger" id="result"></span>
+                <form action="">
+                    <div class="form-group">
+                      <input type="file" class="form-control-file" onchange="showImage.call(this)" name="filee" id="filee" placeholder="" aria-describedby="fileHelpId">
+                    </div>
+                </form>
             </div>
             <div class="col-md-4">
-                <span class="badge badge-pill badge-warning" id="probability"></span>
             </div>
             <div class="col-md-4">
-                <img src="GettyImages-627013932_forweb-700x467.jpg" id="image" class="img-fluid rounded-top" alt="bird">
+                <img src="" id="image" style="display:none" class="img-fluid rounded-top" width="200" height="200" alt="">
+                <br>
+                <span class="badge badge-pill badge-danger" id="result"></span> <span class="badge badge-pill badge-warning" id="probability"></span>
             </div>
         </div>
     </div>
     <script>
-    // get image
-        var getImage = document.getElementById('image');
-        // The result tag in the HTML
-        var result = document.getElementById('result');
-        // The probability tag in the HTML
-        var probability = document.getElementById('probability');
-        // Initialize the Image Classifier method with MobileNet
-        var classifier = ml5.imageClassifier('MobileNet', function () {
-            alert('Model Loaded!');
-        });
-        // Make a prediction with the selected image
-        // This will return an array with a default of 10 options with their probabilities
-        classifier.predict(getImage, function (err, results) {
-            result.innerText = results[0].className;
-            probability.innerText = results[0].probability.toFixed(4);
-        });
+        function showImage() {
+             if (this.files[0]) {
+                var obj = new FileReader();
+                obj.onload = function (data) {
+                    var img = document.getElementById('image');
+                    img.src = data.target.result;
+                    img.style.display = 'block';
+                }
+                obj.readAsDataURL(this.files[0]);
+                // get image
+                var getImage = document.getElementById('image');
+                // The result tag in the HTML
+                var result = document.getElementById('result');
+                // The probability tag in the HTML
+                var probability = document.getElementById('probability');
+                // Initialize the Image Classifier method with MobileNet
+                var classifier = ml5.imageClassifier('MobileNet', function () {
+                    alert('Model Loaded!');
+                });
+                // Make a prediction with the selected image
+                // This will return an array with a default of 10 options with their probabilities
+                classifier.predict(getImage, function (err, results) {
+                    result.innerText = results[0].className;
+                    probability.innerText = results[0].probability.toFixed(4)*100 + " % matched";
+                });
+            }
+        }
     </script>
 </body>
 </html>
