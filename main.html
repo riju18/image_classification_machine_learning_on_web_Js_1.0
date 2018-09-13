@@ -75,7 +75,9 @@
                 // This will return an array with a default of 10 options with their probabilities
                 classifier.predict(getImage, function (err, results) {
                     result.innerText = results[0].className;
-                    probability.innerText = results[0].probability.toFixed(4)*100 + " % matched";
+                    var probabilityVal = results[0].probability;
+                    probability.innerText = (probabilityVal*100).toFixed(4) + " % matched";
+
                 });
             }
         }
